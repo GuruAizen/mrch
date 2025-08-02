@@ -1,0 +1,18 @@
+// src/app/forms/page.js (Server Component)
+import dynamic from "next/dynamic";
+
+// Prevent SSR for anything using localStorage/window
+const ClientOnly = dynamic(() => import("@/components/ClientOnly"), { ssr: false });
+const AuthGuard = dynamic(() => import("@/components/AuthGuard"), { ssr: false });
+
+import InsuranceForm from "@/components/forms/InsuranceForm";
+
+export default function FormPage() {
+  return (
+    <ClientOnly>
+      <AuthGuard>
+        <InsuranceForm />
+      </AuthGuard>
+    </ClientOnly>
+  );
+}
