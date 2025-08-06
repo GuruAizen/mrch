@@ -71,7 +71,7 @@ export default function EnterOtp({ mobile, onBack }) {
       // OTP valid
       setErrorOtp("");
       localStorage.setItem("token", mobile);
-      localStorage.setItem("password", enteredOtp);
+      // localStorage.setItem("password", enteredOtp);
       router.push("/dashboard");
     }
   };

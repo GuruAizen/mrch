@@ -189,11 +189,11 @@ const PreAuthReadTable = () => {
       "star health": "starhealthcashlessform",
       raksha: "rakshacashlessform",
       "icici lombard": "iciciform",
-      "hdfc ergo": "hdfcergoform",
+      "hdfc ergo": "hdfcergohealthinsurancecashlessform",
       "max bupa": "maxbupaform",
       reliance: "relianceform",
-      "bajaj allianz": "bajajform",
-      "aditya birla": "adityabirlaform",
+      "bajaj allianz": "bajajhealthinsurancecashlessform",
+      "aditya birla": "adityabirlacashlessform",
       "future generali": "futureform",
       "united india": "unitedform",
       "new india": "newindiaform",
@@ -227,8 +227,8 @@ const PreAuthReadTable = () => {
   };
 
   const openAndAutoCloseWindow = (cashlessFormName, id) => {
-    console.log(cashlessFormName,id);
-    
+    // console.log(cashlessFormName,id);
+
     // const url = getCashlessFormUrl("Medi Assist", id);
     // const url = getCashlessFormUrl("fhplhealth", id);
     // const url = getCashlessFormUrl("fhplmedical", id);
@@ -292,10 +292,10 @@ const PreAuthReadTable = () => {
       sortable: true,
     },
     {
-      id: "memberId",
+      id: "Payer Name",
       name: (
         <HeaderContent>
-          <span>MEMBER ID</span>
+          <span>PAYER NAME</span>
           <SortIcon src={updownArrow} alt="sort" />
           {/* {sortColumn === "memberId" && (
             <span className="sort-text">
@@ -304,7 +304,7 @@ const PreAuthReadTable = () => {
           )} */}
         </HeaderContent>
       ),
-      selector: (row) => row.formName,
+      selector: (row) => row.payerName,
       sortable: true,
     },
     {

@@ -295,6 +295,7 @@ const SignIn = ({ onForgotPasswordClick }) => {
           <button
             type="submit"
             className="bg-[#1BB5D7] text-white font-bold font-inter py-2 px-6 rounded hover:bg-blue-600"
+            onClick={()=>router.push('/register')}
           >
             Sign In
           </button>

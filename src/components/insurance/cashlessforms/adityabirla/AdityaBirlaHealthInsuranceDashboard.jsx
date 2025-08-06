@@ -4,12 +4,13 @@ import axios from "axios";
 import { GET_CASHLESS_FORM_DATA_BY_ID } from "@/components/API/insurance/PreAuthorizationAPI";
 import { createGlobalStyle } from "styled-components";
 import styled from "styled-components";
-import AegonPage1 from "./AegonPage1";
 import { mainFilledData } from "../medi_assist/functions";
-import AegonPage2 from "./AegonPage2";
-import AegonPage3 from "./AegonPage3";
-import AegonPage4 from "./AegonPage4";
-import AegonPage5 from "./AegonPage5";
+
+import AdityaBirlaPage1 from "./AdityaBirlaPage1";
+import AdityaBirlaPage2 from "./AdityaBirlaPage2";
+import AdityaBirlaPage3 from "./AdityaBirlaPage3";
+import AdityaBirlaPage4 from "./AdityaBirlaPage4";
+import AdityaBirlaForm from "./AdityaBirlaForm";
 
 const GlobalStyles = createGlobalStyle`
   html {
@@ -72,7 +73,7 @@ const LoadingMessage = styled.div`
   color: #000;
 `;
 
-const AegonHealthInsuranceDashboard = ({ id }) => {
+const AdityaBirlaHealthInsuranceDashboard = ({ id }) => {
   const [error, setError] = useState("");
   const [data, setData] = useState({});
   const [isLoaded, setIsLoaded] = useState(false);
@@ -90,11 +91,11 @@ const AegonHealthInsuranceDashboard = ({ id }) => {
         const response = await axios.get(GET_CASHLESS_FORM_DATA_BY_ID(id));
         if (response.status === 200) {
           const result = response.data;
-          console.log(result, "aegon cashless form data result");
+          console.log(result, "aditya birla cashless form data result");
           setData(result);
         }
       } catch (error) {
-        console.error("aegon Cashless form data: ", error.message);
+        console.error("aditya birla Cashless form data: ", error.message);
         setError("Failed to fetch data");
       } finally {
         setIsLoaded(true);
@@ -112,15 +113,12 @@ const AegonHealthInsuranceDashboard = ({ id }) => {
         <LoadingMessage>Loading...</LoadingMessage>
       ) : (
         <>
-          <AegonPage1 data={mainFilledData} />
-          <AegonPage2 data={mainFilledData} />
-          <AegonPage3 data={mainFilledData} />
-          <AegonPage4 data={mainFilledData} />
-          <AegonPage5 data={mainFilledData} />
+          <AdityaBirlaForm data={mainFilledData} />
+          
         </>
       )}
     </PrintContainer>
   );
 };
 
-export default AegonHealthInsuranceDashboard;
+export default AdityaBirlaHealthInsuranceDashboard;

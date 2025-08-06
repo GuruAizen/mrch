@@ -1,12 +1,14 @@
 import React from "react";
 import page5 from "@/assets/form_templates/aegon_life/aegon_life_page5.jpg";
-import docsign from "@/assets/form_templates/common/doctorsignature.jpg"
+import docsign from "@/assets/form_templates/common/doctorsignature.jpg";
 import hospitalseal from "@/assets/form_templates/common/hospitalseal.jpg";
 import styled, { css } from "styled-components";
 import {
   ageGaps,
   dobGaps,
   getDateOnly,
+  getTimeFromDate,
+  getValidFormattedDate,
   parseAgeToYYMM,
   parseAgeToYYMMCharsWithLabels,
   parseDOBtoDDMMYYYY,
@@ -102,7 +104,7 @@ const Field = styled.div`
 const FieldBox = styled.div`
   position: absolute;
   display: flex;
-  justify-content: center;
+  justify-content: start;
   align-content: center;
   font-family: Arial, sans-serif;
   color: #000;
@@ -125,8 +127,7 @@ const FieldBox = styled.div`
     css`
       background-color: white;
       color: black;
-    `}
-    /* border: 1px solid tomato; */
+    `}/* border: 1px solid tomato; */
 `;
 
 const EraseArea = styled.div`
@@ -161,7 +162,7 @@ const AegonPage5 = ({ data }) => {
       </Field>
     ));
   };
-const renderImage = (
+  const renderImage = (
     src,
     top,
     left,
@@ -226,27 +227,65 @@ const renderImage = (
     <PageContainer>
       <PageWrapper pagebreak={true}>
         <BackgroundImage src={page5.src} alt="Background Form" />
+        {/**********************************  PATIENT / INSURED NAME  ****************************/}
+        {renderParagraph(data?.patientName || "", 436, 243, 387, 16)}
 
-        {/********************************** NAME OF TREATING DOCTOR ****************************/}
-        {renderParagraph(data?.nameOfTreatingDoctor || "", 174, 300, 420, 18)}
+        {/**********************************  CONTACT NUMBER   ****************************/}
+        {renderParagraph(data?.contactNo || "", 464, 199, 144, 16)}
+        {/**********************************  EMAIL    ****************************/}
+        {renderParagraph(data?.email || "", 464, 515, 194, 16)}
 
-        {/********************************** QUALIFICATION ****************************/}
-        {renderParagraph(data?.doctorQualification || "", 198, 300, 420, 18)}
+        {/********************************** PATIENT / INSURED SIGNATURE ****************************/}
+        {renderImage(
+          docsign.src, // src
+          484, // top (pixels from top)
+          290, // left (pixels from left)
+          100, // width in px
+          22, // height in px
+          3, // zIndex: place above content
+          1 // opacity: 10% for watermark effect
+        )}
 
-        {/********************************** REGISTRATION WITH STATE CODE ****************************/}
+        {/********************************** PATIENT / INSURER DATE   ****************************/}
         {renderParagraph(
-          data?.registrationNumberWithStateCode || "",
-          222,
-          300,
-          420,
-          18
+          getValidFormattedDate(data?.dateAndTimeOfSignature) || "",
+          516,
+          145,
+          164,
+          16
+        )}
+
+        {/**********************************  TIME   ****************************/}
+        {renderParagraph(
+          getTimeFromDate(data?.dateAndTimeOfSignature) || "",
+          516,
+          392,
+          144,
+          16
+        )}
+        {/**********************************  DATE   ****************************/}
+        {renderParagraph(
+          getValidFormattedDate(data?.hospitalDateAndTimeOfSignature) || "",
+          956,
+          82,
+          144,
+          16
+        )}
+
+        {/**********************************  TIME   ****************************/}
+        {renderParagraph(
+          getTimeFromDate(data?.hospitalDateAndTimeOfSignature) || "",
+          957,
+          273,
+          144,
+          16
         )}
 
         {/********************************** PATIENT / INSURER SIGNATURE ****************************/}
         {renderImage(
           docsign.src, // src
-          320, // top (pixels from top)
-          460, // left (pixels from left)
+          920, // top (pixels from top)
+          520, // left (pixels from left)
           135, // width in px
           30, // height in px
           3, // zIndex: place above content
@@ -256,8 +295,8 @@ const renderImage = (
         {/********************************** HOSPITAL SEAL ****************************/}
         {renderImage(
           hospitalseal.src, // src
-          310, // top (pixels from top)
-          140, // left (pixels from left)
+          900, // top (pixels from top)
+          130, // left (pixels from left)
           150, // width in px
           60, // height in px
           3, // zIndex: place above content

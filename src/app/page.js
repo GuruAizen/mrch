@@ -16,5 +16,5 @@ export default function RootPage() {
     }
   }, [router]);
 
-  return <p>Loading...</p>; // Show something while redirecting
+ 
 }

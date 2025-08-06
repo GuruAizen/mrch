@@ -13,6 +13,8 @@ const Logout = () => {
       router.push("/");
     } else {
       localStorage.removeItem("token");
+      localStorage.removeItem("username");
+      localStorage.removeItem("password");
       router.push("/");
     }
   }, []);

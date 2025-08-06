@@ -140,6 +140,8 @@ const SignUp = ({ onForgotPasswordClick }) => {
 
     if (noErrors) {
       localStorage.setItem("token", formData.mobile);
+      localStorage.setItem("username", formData.email);
+      localStorage.setItem("password", formData.password);
       // Redirect to OTP page with mobile as query param
       router.push(
         `/register/otp?mobile=${encodeURIComponent(formData.mobile)}`
@@ -172,7 +174,7 @@ const SignUp = ({ onForgotPasswordClick }) => {
               name="mobile"
               onChange={handleChange}
               onKeyDown={handleKeyDown}
-              placeholder="Enter user name"
+              placeholder="Enter mobile number"
               value={formData.mobile}
               className="w-full border border-gray-300 px-4 py-2
                  placeholder-[#807D7D] 
@@ -285,7 +287,7 @@ const SignUp = ({ onForgotPasswordClick }) => {
           </div>
 
           {/* Forgot Password */}
-          <div className=" w-full flex justify-end text-[#1BB5D7] ">
+          {/* <div className=" w-full flex justify-end text-[#1BB5D7] ">
             <p
               className="cursor-pointer"
               // onClick={() => router.push("/register")}
@@ -297,7 +299,7 @@ const SignUp = ({ onForgotPasswordClick }) => {
             >
               Forgot Password?
             </p>
-          </div>
+          </div> */}
 
           {/* Checkbox */}
           <div className="w-full h-12 ">
@@ -359,6 +361,12 @@ const SignUp = ({ onForgotPasswordClick }) => {
           >
             Sign Up
           </button>
+          <div
+            className="flex gap-3 font-inter text-[#525151] pt-3 "
+            onClick={() => router.push("/login")}
+          >
+            Already have an account? <span className="text-[#1BB5D7] cursor-pointer "> Sign In</span>
+          </div>
         </form>
       </div>
     </div>

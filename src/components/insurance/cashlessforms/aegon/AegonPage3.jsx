@@ -83,7 +83,7 @@ const Tick = styled.div`
   top: ${({ top }) => top}px;
   left: ${({ left }) => left}px;
   z-index: 20;
-  border: 1px solid tomato;
+  /* border: 1px solid tomato; */
 `;
 
 const Field = styled.div`
@@ -124,7 +124,7 @@ const FieldBox = styled.div`
       background-color: white;
       color: black;
     `}
-  border: 1px solid tomato;
+  /* border: 1px solid tomato; */
 `;
 
 const EraseArea = styled.div`
@@ -136,7 +136,7 @@ const EraseArea = styled.div`
   background-color: white;
   z-index: 10;
   opacity: 1;
-  border: 1px solid tomato;
+  /* border: 1px solid tomato; */
 `;
 
 const AegonPage3 = ({ data }) => {
@@ -258,7 +258,7 @@ const AegonPage3 = ({ data }) => {
         )}
         {/********************************** THIS IS AN EMERGENCY PLANNED HOSPITAL EVENT ****************************/}
         {isEmergencyType("an emergency") && (
-          <Tick top={197} left={485}>
+          <Tick top={197} left={487}>
             ✔
           </Tick>
         )}
@@ -270,8 +270,8 @@ const AegonPage3 = ({ data }) => {
         {/**********************************  DIABETES   ****************************/}
         {renderParagraph(
           renderConditionally(data?.diabetesSince, data?.diabetesSinceTf),
-          163,
-          378,
+          274,
+          328,
           52,
           18,
           10
@@ -279,9 +279,9 @@ const AegonPage3 = ({ data }) => {
 
         {renderParagraph(
           renderConditionally(data?.diabetesRemarks, data?.diabetesSinceTf),
-          163,
-          434,
-          150,
+          274,
+          400,
+          310,
           18
         )}
 
@@ -291,8 +291,8 @@ const AegonPage3 = ({ data }) => {
             data?.heartDiseaseSince,
             data?.heartDiseaseSinceTf
           ),
-          187,
-          378,
+          304,
+          328,
           52,
           18,
           10
@@ -303,9 +303,9 @@ const AegonPage3 = ({ data }) => {
             data?.heartDiseaseRemarks,
             data?.heartDiseaseSinceTf
           ),
-          187,
-          434,
-          150,
+          304,
+          400,
+          310,
           18
         )}
 
@@ -315,8 +315,8 @@ const AegonPage3 = ({ data }) => {
             data?.hypertensionSince,
             data?.hypertensionSinceTf
           ),
-          210,
-          378,
+          334,
+          328,
           52,
           18,
           10
@@ -327,9 +327,9 @@ const AegonPage3 = ({ data }) => {
             data?.hypertensionRemarks,
             data?.hypertensionSinceTf
           ),
-          210,
-          434,
-          150,
+          334,
+          400,
+          310,
           18
         )}
         {/**********************************  HYPER LIPIDEMIAS  ****************************/}
@@ -338,8 +338,8 @@ const AegonPage3 = ({ data }) => {
             data?.hyperlipidemiasSince,
             data?.hyperlipidemiasSinceTf
           ),
-          234,
-          378,
+          364,
+          328,
           52,
           18,
           10
@@ -350,9 +350,9 @@ const AegonPage3 = ({ data }) => {
             data?.hyperlipidemiasRemarks,
             data?.hyperlipidemiasSinceTf
           ),
-          234,
-          434,
-          150,
+          364,
+          400,
+          310,
           18
         )}
 
@@ -362,8 +362,8 @@ const AegonPage3 = ({ data }) => {
             data?.osteoarthritisSince,
             data?.osteoarthritisSinceTf
           ),
-          259,
-          378,
+          393,
+          328,
           52,
           18,
           10
@@ -374,9 +374,9 @@ const AegonPage3 = ({ data }) => {
             data?.osteoarthritisRemarks,
             data?.osteoarthritisSinceTf
           ),
-          259,
-          434,
-          150,
+          393,
+          400,
+          310,
           18
         )}
 
@@ -386,8 +386,8 @@ const AegonPage3 = ({ data }) => {
             data?.asthmaCopdBronchitisSince,
             data?.asthmaCopdBronchitisSinceTf
           ),
-          282,
-          378,
+          423,
+          328,
           52,
           18,
           10
@@ -398,25 +398,25 @@ const AegonPage3 = ({ data }) => {
             data?.asthmaCopdBronchitisRemarks,
             data?.asthmaCopdBronchitisSinceTf
           ),
-          282,
-          434,
-          150,
+          423,
+          400,
+          310,
           18
         )}
         {/**********************************  CANCER  ****************************/}
         {renderParagraph(
           renderConditionally(data?.cancerSince, data?.cancerSinceTf),
-          306,
-          378,
+          452,
+          328,
           52,
           18,
           10
         )}
         {renderParagraph(
           renderConditionally(data?.cancerRemarks, data?.cancerSinceTf),
-          306,
-          434,
-          150,
+          452,
+          400,
+          310,
           18
         )}
         {/**********************************  ALCOHOL / DRUG ABUSE ****************************/}
@@ -425,8 +425,8 @@ const AegonPage3 = ({ data }) => {
             data?.alcoholDrugabuseSince,
             data?.alcoholDrugabuseSinceTf
           ),
-          329,
-          378,
+          482,
+          328,
           52,
           18,
           10
@@ -436,25 +436,25 @@ const AegonPage3 = ({ data }) => {
             data?.alcoholDrugabuseRemarks,
             data?.alcoholDrugabuseSinceTf
           ),
-          329,
-          434,
-          150,
+          482,
+          400,
+          310,
           18
         )}
         {/********************************** HIV / STD ****************************/}
         {renderParagraph(
           renderConditionally(data?.hivstdSince, data?.hivstdSinceTf),
-          353,
-          378,
+          512,
+          328,
           52,
           18,
           10
         )}
         {renderParagraph(
           renderConditionally(data?.hivstdRemarks, data?.hivstdSinceTf),
-          353,
-          434,
-          150,
+          512,
+          400,
+          310,
           18
         )}
 
@@ -464,8 +464,8 @@ const AegonPage3 = ({ data }) => {
             data?.anyOtherailmentSince,
             data?.anyOtherailmentSinceTf
           ),
-          377,
-          378,
+          542,
+          328,
           52,
           18,
           10
@@ -475,62 +475,53 @@ const AegonPage3 = ({ data }) => {
             data?.anyOtherailmentRemarks,
             data?.anyOtherailmentSinceTf
           ),
-          377,
-          434,
-          150,
+          542,
+          400,
+          310,
           18
         )}
 
         {/**********************************  EXPECTED NUMBER OF DAYS    ****************************/}
         {renderParagraph(
           data?.expectedNoOfDaysStayInHospital || "",
-          402,
-          378,
-          80,
+          582,
+          414,
+          190,
           18
         )}
         {/**********************************  DAYS IN ICU   ****************************/}
-        {renderParagraph(data?.daysInIcu || "", 429, 378, 80, 18)}
+        {renderParagraph(data?.daysInIcu || "", 616, 414, 190, 18)}
         {/**********************************  ROOM TYPE   ****************************/}
-        {renderParagraph(data?.roomType || "", 455, 378, 100, 18)}
+        {renderParagraph(data?.roomType || "", 655, 148, 239, 18)}
         {/**********************************  PER DAY ROOM RENT   ****************************/}
         {renderParagraph(
           data?.perDayRoomRentNursingServiceCharges || "",
-          480,
-          488,
-          143,
+          685,
+          477,
+          239,
           18
         )}
 
         {/**********************************  EXPECTED COST OF INVESTIGATION   ****************************/}
         {renderParagraph(
           data?.expectedCostForInvestigationDiagnostics || "",
-          506,
-          488,
-          143,
-          18
-        )}
-
-        {/**********************************  EXPECTED COST OF INVESTIGATION   ****************************/}
-        {renderParagraph(
-          data?.expectedCostForInvestigationDiagnostics || "",
-          506,
-          488,
-          143,
+          719,
+          477,
+          239,
           18
         )}
 
         {/********************************** ICU CHARGES   ****************************/}
-        {renderParagraph(data?.icuCharges || "", 531, 488, 143, 18)}
+        {renderParagraph(data?.icuCharges || "", 753, 477, 239, 18)}
 
         {/********************************** OT CHARGES   ****************************/}
-        {renderParagraph(data?.otCharges || "", 556, 488, 143, 18)}
+        {renderParagraph(data?.otCharges || "", 787, 477, 239, 18)}
         {/********************************** PROFESSION FEES SURGEON   ****************************/}
         {renderParagraph(
           data?.professionalFeesSurgeonAnesthetistFeesConsultationCharges || "",
-          582,
-          488,
-          143,
+          822,
+          477,
+          239,
           18
         )}
 
@@ -538,28 +529,28 @@ const AegonPage3 = ({ data }) => {
         {renderParagraph(
           data?.medicinesConsumablesCostOfImplantsIfApplicablePleaseSpecify ||
             "",
-          628,
-          493,
-          143,
+          854,
+          477,
+          239,
           18
         )}
         {/********************************** OTHER HOSPITAL EXPENSES     ****************************/}
-        {renderParagraph(data?.otherHospitalExpenses || "", 654, 493, 143, 18)}
+        {renderParagraph(data?.otherHospitalExpenses || "", 887, 477, 239, 18)}
 
         {/********************************** ALL INCLUSIVE PACKAGES ****************************/}
         {renderParagraph(
           data?.allInclusivePackageChargesIfAnyApplicable || "",
-          680,
-          496,
-          143,
+          920,
+          477,
+          239,
           18
         )}
         {/********************************** SUM TOTAL EXPECTED ****************************/}
         {renderParagraph(
           data?.sumTotalExpectedCostOfHospitalization || "",
-          706,
-          496,
-          143,
+          954,
+          477,
+          239,
           18
         )}
       </PageWrapper>

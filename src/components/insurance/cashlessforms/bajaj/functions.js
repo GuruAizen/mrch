@@ -4,6 +4,7 @@ export const normalizeString = (value) =>
     .trim()
     .toLowerCase();
 
+    
 /**********************************AGE 5 Y MM YY ****************************/
 export function parseAgeToYYMM(ageStr) {
   let years = 0;
@@ -25,7 +26,52 @@ export function parseAgeToYYMM(ageStr) {
 
   return yearsStr + monthsStr; // e.g. "0500" or "0503"
 }
+export function parseAgeToLabel(ageStr) {
+  let years = 0;
+  let months = 0;
 
+  if (!ageStr || typeof ageStr !== 'string') {
+    return "00 Years 00 Months";
+  }
+
+  // Match years: e.g. "5Y", "5 Y"
+  const yearMatch = ageStr.match(/(\d+)\s*Y/i);
+  if (yearMatch) {
+    years = parseInt(yearMatch[1], 10);
+  }
+
+  // Match months: e.g. "3M", "3 M"
+  const monthMatch = ageStr.match(/(\d+)\s*M/i);
+  if (monthMatch) {
+    months = parseInt(monthMatch[1], 10);
+  }
+
+  const yearsStr = years.toString().padStart(2, "0");
+  const monthsStr = months.toString().padStart(2, "0");
+
+  return `${yearsStr} Years ${monthsStr} Months`;
+}
+
+
+/**********************************AGE 5 Y MM YY ****************************/
+export function parseAgeToYYMMCharsWithLabels(ageStr) {
+  let years = 0;
+  let months = 0;
+
+  const yearMatch = ageStr.match(/(\d+)\s*Y/i);
+  if (yearMatch) years = parseInt(yearMatch[1], 10);
+
+  const monthMatch = ageStr.match(/(\d+)\s*M/i);
+  if (monthMatch) months = parseInt(monthMatch[1], 10);
+
+  const yearsStr = years.toString().padStart(2, "0");
+  const monthsStr = months.toString().padStart(2, "0");
+
+  return [...yearsStr, "Y", ...monthsStr, "M"];
+}
+export const getDateOnly = (dateStr = "") => {
+  return dateStr.split(" ")[0]; // "02/06/2020"
+};
 export const ageGaps = [15, 45, 15, 33];
 
 /********************************** DOB DD MM YYYY ****************************/
@@ -58,6 +104,189 @@ export function parseTimeToHHMM(dateStr) {
 
   return `${validHour}${validMinute}`; // → "1510"
 }
+
+export const getValidFormattedDate = (dateStr) => {
+  if (!dateStr) return "-";
+
+  const trimmed = dateStr.trim().toLowerCase();
+  if (trimmed === "" || trimmed === "null") return "-";
+
+  // Expected format: "DD/MM/YYYY HH:mm:ss" or "DD/MM/YYYY"
+  // Split date and time parts
+  const [datePart] = trimmed.split(" ");
+
+  const dateParts = datePart.split("/");
+  if (dateParts.length !== 3) return "-";
+
+  const [dd, mm, yyyy] = dateParts.map(Number);
+
+  // Validate numbers
+  if (
+    isNaN(dd) ||
+    isNaN(mm) ||
+    isNaN(yyyy) ||
+    dd < 1 ||
+    dd > 31 ||
+    mm < 1 ||
+    mm > 12 ||
+    yyyy < 1000
+  ) {
+    return "-";
+  }
+
+  // Return formatted date DD/MM/YYYY (already in that format)
+  return `${String(dd).padStart(2, "0")}/${String(mm).padStart(
+    2,
+    "0"
+  )}/${yyyy}`;
+};
+// export const getValidFormattedDateArray = (dateStr) => {
+//   if (!dateStr) return ["-", "-", "-", "-", "-", "-", "-", "-"];
+
+//   const trimmed = dateStr.trim().toLowerCase();
+//   if (trimmed === "" || trimmed === "null") return ["-", "-", "-", "-", "-", "-", "-", "-"];
+
+//   const [datePart] = trimmed.split(" ");
+//   const dateParts = datePart.split("/");
+//   if (dateParts.length !== 3) return ["-", "-", "-", "-", "-", "-", "-", "-"];
+
+//   const [dd, mm, yyyy] = dateParts.map(Number);
+
+//   if (
+//     isNaN(dd) || dd < 1 || dd > 31 ||
+//     isNaN(mm) || mm < 1 || mm > 12 ||
+//     isNaN(yyyy) || yyyy < 1000
+//   ) {
+//     return ["-", "-", "-", "-", "-", "-", "-", "-"];
+//   }
+
+//   const ddStr = String(dd).padStart(2, "0");
+//   const mmStr = String(mm).padStart(2, "0");
+//   const yyyyStr = String(yyyy).padStart(4, "0");
+
+//   return [
+//     ddStr[0], ddStr[1],
+//     mmStr[0], mmStr[1],
+//     yyyyStr[0], yyyyStr[1], yyyyStr[2], yyyyStr[3]
+//   ];
+// };
+export const getValidFormattedDateArray = (dateStr) => {
+  // Fallback return for invalid input
+  const fallback = ["-", "-", "-", "-", "-", "-", "-", "-"];
+
+  // Null/undefined or non-string check
+  if (!dateStr || typeof dateStr !== "string") return fallback;
+
+  // Trim and sanitize input
+  const trimmed = dateStr.trim().toLowerCase();
+  if (trimmed === "" || trimmed === "null") return fallback;
+
+  // Split off time part if present
+  const [datePart] = trimmed.split(" ");
+  const dateParts = datePart.split("/");
+
+  // Must have exactly 3 parts (DD/MM/YYYY)
+  if (dateParts.length !== 3) return fallback;
+
+  // Parse numbers
+  const [dd, mm, yyyy] = dateParts.map(Number);
+
+  // Validate ranges
+  if (
+    isNaN(dd) || dd < 1 || dd > 31 ||
+    isNaN(mm) || mm < 1 || mm > 12 ||
+    isNaN(yyyy) || yyyy < 1000
+  ) {
+    return fallback;
+  }
+
+  // Pad with 0s
+  const ddStr = String(dd).padStart(2, "0");
+  const mmStr = String(mm).padStart(2, "0");
+  const yyyyStr = String(yyyy).padStart(4, "0");
+
+  // Return array of digits
+  return [
+    ddStr[0], ddStr[1],
+    mmStr[0], mmStr[1],
+    yyyyStr[0], yyyyStr[1], yyyyStr[2], yyyyStr[3]
+  ];
+};
+export const getMonthYearArray = (dateStr) => {
+  // Fallback return for invalid input
+  const fallback = ["-", "-", "-", "-"];
+
+  // Null/undefined or non-string check
+  if (!dateStr || typeof dateStr !== "string") return fallback;
+
+  // Trim and sanitize input
+  const trimmed = dateStr.trim().toLowerCase();
+  if (trimmed === "" || trimmed === "null") return fallback;
+
+  // Split off time part if present
+  const [datePart] = trimmed.split(" ");
+  const dateParts = datePart.split("/");
+
+  // Must have exactly 3 parts (DD/MM/YYYY)
+  if (dateParts.length !== 3) return fallback;
+
+  // Parse numbers
+  const [dd, mm, yyyy] = dateParts.map(Number);
+
+  // Validate ranges
+  if (
+    isNaN(dd) || dd < 1 || dd > 31 ||
+    isNaN(mm) || mm < 1 || mm > 12 ||
+    isNaN(yyyy) || yyyy < 1000
+  ) {
+    return fallback;
+  }
+
+  // Pad with 0s
+  const mmStr = String(mm).padStart(2, "0");
+  const yyyyStr = String(yyyy).padStart(4, "0");
+
+  // Return array: MM, MM, YY, YY
+  return [
+    mmStr[0], mmStr[1],
+    yyyyStr[2], yyyyStr[3]
+  ];
+};
+
+
+
+export const getTimeFromDate = (dateStr) => {
+  if (!dateStr) return ["-", "-", "-", "-"];
+
+  const trimmed = dateStr.trim().toLowerCase();
+  if (trimmed === "" || trimmed === "null") return ["-", "-", "-", "-"];
+
+  const timePart = trimmed.split(" ")[1];
+  if (!timePart) return ["-", "-", "-", "-"];
+
+  const timeParts = timePart.split(":");
+  if (timeParts.length < 2) return ["-", "-", "-", "-"];
+
+  const [hh, mm] = timeParts.map(Number);
+
+  if (
+    isNaN(hh) || hh < 0 || hh > 23 ||
+    isNaN(mm) || mm < 0 || mm > 59
+  ) {
+    return ["-", "-", "-", "-"];
+  }
+
+  const hhStr = String(hh).padStart(2, "0");
+  const mmStr = String(mm).padStart(2, "0");
+
+  return [
+    hhStr[0], // first digit of hour
+    hhStr[1], // second digit of hour
+    mmStr[0], // first digit of minute
+    mmStr[1]  // second digit of minute
+  ];
+};
+
 
 export const dobGaps = [
   15, // between D and D (e.g., '0' and '2')
@@ -133,7 +362,7 @@ export const mainFilledData = {
   memberId: "MEM1001",
   currentlyDoYouHaveAnyOtherMedicalClaimHealthInsurance: "no",
   doYouHaveAFamilyPhysician: "Yes",
-  currentPatientAddress: "123, Main Street, Bhubaneswar",
+  currentPatientAddress: "123, Main Street, Bhubaneswar, Bhubaneswar",
   nameOfTheTreatingDoctor: "Dr. Rajesh Kumar",
   doctorContactNo: "0123456789",
   relevantClinicalFindings: "Normal clinical findings",
@@ -158,7 +387,7 @@ export const mainFilledData = {
   firNo: "365",
   injuryDueToAlcoholConsumption: "no",
   testsConductedToEstablish: "no",
-  expectedDateOfDelivery: "01/01/1900 00:00:00",
+  expectedDateOfDelivery: "05/11/1910 00:00:00",
   maternityG: "10",
   maternityP: "20",
   maternityL: "30",
@@ -205,14 +434,14 @@ export const mainFilledData = {
   pastHistoryOfPresentAilment: false,
   intensiveCare: "No",
   presentAilmentDueToPed: false,
-  presentAilmentDuration: "311 days",
+  presentAilmentDuration: "311",
   daysInIcu: "10",
 
   diabetesSince: "15/08/2025",
   diabetesSinceTf: true,
   diabetesRemarks: "No diabetes history",
 
-  heartDiseaseSince: "N/A",
+  heartDiseaseSince: "15/08/2025",
   heartDiseaseSinceTf: true,
   heartDiseaseRemarks: "No heart disease",
 
@@ -244,8 +473,8 @@ export const mainFilledData = {
   hivstdSinceTf: true,
   hivstdRemarks: "No HIV/STD",
 
-  anyOtherailmentSince: "05/01/2015",
-  anyOtherailmentSinceTf: true,
+  anyOtherailmentSince: "N/A",
+  anyOtherailmentSinceTf: false,
   anyOtherailmentRemarks: "No other ailments",
 
   clinicalFindings: "No abnormality detected",

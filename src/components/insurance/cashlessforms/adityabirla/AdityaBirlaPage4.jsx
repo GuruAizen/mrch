@@ -1,9 +1,19 @@
 import React from "react";
-import page4 from "@/assets/form_templates/fhpl/FHPL_PAGE_4.jpg";
+import page4 from "@/assets/form_templates/aditya_birla/aditya_birla_capital_page4.jpg";
 import docsign from "@/assets/form_templates/common/doctorsignature.jpg";
 import hospitalseal from "@/assets/form_templates/common/hospitalseal.jpg";
-import { getTimeFromDate, getValidFormattedDate } from "./functions";
 import styled, { css } from "styled-components";
+import {
+  ageGaps,
+  dobGaps,
+  getDateOnly,
+  getTimeFromDate,
+  getValidFormattedDate,
+  parseAgeToYYMM,
+  parseAgeToYYMMCharsWithLabels,
+  parseDOBtoDDMMYYYY,
+  parseTimeToHHMM,
+} from "./functions";
 
 export const normalizeString = (value) =>
   String(value ?? "")
@@ -71,6 +81,68 @@ const BackgroundImage = styled.img`
   }
 `;
 
+const Tick = styled.div`
+  position: absolute;
+  font-size: 14px;
+  top: ${({ top }) => top}px;
+  left: ${({ left }) => left}px;
+  z-index: 20;
+  /* border: 1px solid tomato; */
+`;
+
+const Field = styled.div`
+  position: absolute;
+  font-size: 12px;
+  font-family: Arial, sans-serif;
+  color: #000;
+  top: ${({ top }) => top}px;
+  left: ${({ left }) => left}px;
+  z-index: 20;
+  text-transform: uppercase;
+`;
+
+const FieldBox = styled.div`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  font-family: Arial, sans-serif;
+  color: #000;
+  top: ${({ top }) => top}px;
+  left: ${({ left }) => left}px;
+  width: ${({ width }) => width}px;
+  height: ${({ height }) => height}px;
+  font-size: ${({ fontSize }) => fontSize || 12}px;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  z-index: 20;
+  text-align: center;
+  vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  ${({ whiteBg }) =>
+    whiteBg &&
+    css`
+      background-color: white;
+      color: black;
+    `}
+
+  /* border: 1px solid tomato; */
+`;
+
+const EraseArea = styled.div`
+  position: absolute;
+  top: ${({ top }) => top}px;
+  left: ${({ left }) => left}px;
+  width: ${({ width }) => width}px;
+  height: ${({ height }) => height}px;
+  background-color: white;
+  z-index: 10;
+  opacity: 1;
+  /* border: 1px solid tomato; */
+`;
 const StyledImage = styled.img`
   position: absolute;
   top: ${({ top }) => top}px;
@@ -83,64 +155,15 @@ const StyledImage = styled.img`
   user-select: none;
 `;
 
-const Tick = styled.div`
-  position: absolute;
-  font-size: 14px;
-  top: ${({ top }) => top}px;
-  left: ${({ left }) => left}px;
-  /* border: 1px solid tomato; */
-  /* background-color: red; */
-`;
-
-const Field = styled.div`
-  position: absolute;
-  font-size: 12px;
-  font-family: Arial, sans-serif;
-  color: #000;
-  top: ${({ top }) => top}px;
-  left: ${({ left }) => left}px;
-  z-index: 20; // <-- ensure it is above EraseArea
-  text-transform: uppercase; // Apply uppercase via CSS
-  /* border: 1px dashed red; // Helps you visualize the box while aligning */
-`;
-
-const FieldBox = styled.div`
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  font-family: Arial, sans-serif;
-  color: #000;
-  top: ${({ top }) => top}px;
-  left: ${({ left }) => left}px;
-  min-width: ${({ width }) => width}px;
-  height: ${({ height }) => height}px;
-  font-size: ${({ fontSize }) => fontSize || 12}px;
-  line-height: 1.4;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  z-index: 20;
-  text-align: center;
-  vertical-align: middle;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-transform: uppercase; // Apply uppercase via CSS
-`;
-
-//Apply whitener in specific area
-const EraseArea = styled.div`
-  position: absolute;
-  top: ${({ top }) => top}px;
-  left: ${({ left }) => left}px;
-  width: ${({ width }) => width}px;
-  height: ${({ height }) => height}px;
-  background-color: white; // or whatever color matches your form background
-  z-index: 10; // Above background image, below text
-  opacity: 1; // Fully opaque to hide background
-  /* border: 1px solid tomato; */
-`;
-
-const FHPLPage4 = ({ data }) => {
+const AdityaBirlaPage4 = ({ data }) => {
+  const renderCharByChar = (text, top, left, gap) => {
+    if (!text) return null;
+    return [...(text || "")].map((char, index) => (
+      <Field key={index} top={top} left={left + index * gap}>
+        {char}
+      </Field>
+    ));
+  };
   const renderImage = (
     src,
     top,
@@ -161,6 +184,27 @@ const FHPLPage4 = ({ data }) => {
       alt=""
     />
   );
+  const renderCharByCharWithGaps = (
+    text,
+    top,
+    left,
+    gaps = [],
+    defaultGap = 15.3
+  ) => {
+    const chars = [...(text || "")];
+    let offset = 0;
+
+    return chars.map((char, index) => {
+      const field = (
+        <Field key={index} top={top} left={left + offset}>
+          {char}
+        </Field>
+      );
+      offset += gaps[index] ?? defaultGap;
+      return field;
+    });
+  };
+
   const renderParagraph = (
     text,
     top,
@@ -168,7 +212,7 @@ const FHPLPage4 = ({ data }) => {
     width,
     height,
     fontSize,
-    options = {} // optional borders
+    whiteBg = false
   ) => (
     <FieldBox
       top={top}
@@ -176,98 +220,63 @@ const FHPLPage4 = ({ data }) => {
       width={width}
       height={height}
       fontSize={fontSize}
-      style={{
-        borderBottom: options.bottomBorder ? "1px solid black" : "none",
-        // optionally keep red debug border for ALL calls
-        // border: "1px solid red",
-      }}
+      whiteBg={whiteBg}
     >
       {text || ""}
     </FieldBox>
   );
   return (
     <PageContainer>
-      <PageWrapper pageBreak={false}>
+      <PageWrapper pagebreak={true}>
         <BackgroundImage src={page4.src} alt="Background Form" />
-
-        {/**********************************  PATIENT / INSURED NAME  ****************************/}
-        {renderParagraph(data?.patientName || "", 398, 273, 177, 16)}
-
-        {/**********************************  CONTACT NUMBER   ****************************/}
-        {renderParagraph(data?.contactNo || "", 416, 219, 144, 16)}
-        {/**********************************  EMAIL    ****************************/}
-        {renderParagraph(data?.email || "", 416, 489, 144, 16)}
-
-        {/********************************** PATIENT / INSURED SIGNATURE ****************************/}
-        {renderImage(
-          docsign.src, // src
-          434, // top (pixels from top)
-          300, // left (pixels from left)
-          100, // width in px
-          22, // height in px
-          3, // zIndex: place above content
-          1 // opacity: 10% for watermark effect
-        )}
-
-        {/**********************************  DATE   ****************************/}
-        {renderParagraph(
-          getValidFormattedDate(data?.dateAndTimeOfSignature) || "",
-          452,
-          139,
-          144,
-          16
-        )}
-
-        {/**********************************  TIME   ****************************/}
-        {renderParagraph(
-          getTimeFromDate(data?.dateAndTimeOfSignature) || "",
-          452,
-          413,
-          144,
-          16
-        )}
-        {/********************************** HOSPITAL SEAL ****************************/}
-        {renderImage(
-          hospitalseal.src, // src
-          954, // top (pixels from top)
-          180, // left (pixels from left)
-          100, // width in px
-          52, // height in px
-          3, // zIndex: place above content
-          1 // opacity: 10% for watermark effect
-        )}
-        {/********************************** PATIENT / INSURED SIGNATURE ****************************/}
-        {renderImage(
-          docsign.src, // src
-          954, // top (pixels from top)
-          620, // left (pixels from left)
-          100, // width in px
-          52, // height in px
-          3, // zIndex: place above content
-          1 // opacity: 10% for watermark effect
-        )}
 
         {/**********************************  DATE   ****************************/}
         {renderParagraph(
           getValidFormattedDate(data?.hospitalDateAndTimeOfSignature) || "",
-          1020,
-          139,
+          382,
+          90,
           144,
-          16
+          24,
+          12,
+          true
         )}
 
         {/**********************************  TIME   ****************************/}
+
         {renderParagraph(
           getTimeFromDate(data?.hospitalDateAndTimeOfSignature) || "",
-          1020,
-          533,
+          355,
+          90,
           144,
-          16
+          24,
+          12,
+          true
         )}
-        
+
+        {/********************************** PATIENT / INSURER SIGNATURE ****************************/}
+        {renderImage(
+          docsign.src, // src
+          300, // top (pixels from top)
+          510, // left (pixels from left)
+          135, // width in px
+          30, // height in px
+          3, // zIndex: place above content
+          1 // opacity: 10% for watermark effect
+        )}
+
+        {/********************************** HOSPITAL SEAL ****************************/}
+        {renderImage(
+          hospitalseal.src, // src
+          280, // top (pixels from top)
+          60, // left (pixels from left)
+          150, // width in px
+          55, // height in px
+          3, // zIndex: place above content
+          1 // opacity: 10% for watermark effect
+        )}
       </PageWrapper>
     </PageContainer>
   );
 };
 
-export default FHPLPage4;
+export default AdityaBirlaPage4;
